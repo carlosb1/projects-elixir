@@ -1,6 +1,6 @@
-defmodule Example do
+defmodule Examples do
   @moduledoc """
-  Documentation for `Example`.
+  Documentation for `Examples`.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule Example do
 
   ## Examples
 
-      iex> Example.hello()
+      iex> Examples.hello()
       :world
 
   """
