@@ -1,18 +1,22 @@
-defmodule Examples do
-  @moduledoc """
-  Documentation for `Examples`.
-  """
+defmodule Polymorphic do
+  def double(x) when is_number(x), do: 2 * x
+  def double(x) when is_binary(x), do: x <> x
+end
 
-  @doc """
-  Hello world.
+defmodule ListHelper do
+  def sum([]), do: 0
+  def sum([head, tail]), do: head + sum(tail)
 
-  ## Examples
+  def sum2(list) do
+    do_sum(0, list)
+  end
 
-      iex> Examples.hello()
-      :world
+  defp do_sum(current_sum, []) do
+    current_sum
+  end
 
-  """
-  def hello do
-    :world
+  defp do_sum(current_sum, [head | tail]) do
+    new_sum = head + current_sum
+    do_sum(new_sum, tail)
   end
 end

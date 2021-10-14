@@ -1,4 +1,6 @@
 defmodule TodoList do
+  defstruct auto_id: 1, entries: %{}
+
   def new(), do: MultiDict.new()
 
   def add_entry(todo_list, date, title) do
