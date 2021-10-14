@@ -1,11 +1,11 @@
-defmodule Example.MixProject do
+defmodule Examples.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :example,
+      app: :examples,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
