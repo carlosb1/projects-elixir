@@ -26,7 +26,7 @@ end
 
 defmodule TodoListv2 do
   defstruct auto_id: 1, entries: %{}
-  def new(), do: %TodoList{}
+  def new(), do: %TodoListv2{}
 
   def new(entries \\ []) do
     Enum.reduce(entries, %TodoListv2{}, fn entry, todo_list_acc ->
@@ -70,4 +70,23 @@ defmodule TodoListv2 do
 end
 
 defmodule TodoListv2.CsvImporter do
+  @spec import(binary()) :: TodoListv2
+  def import(name_file) do
+    content = File.read!(name_file)
+
+    todolists =
+      content
+      |> String.split("\n", trim: true)
+      |> Enum.map(fn x -> String.split(x, ",", trim: true) end)
+      |> Enum.map(fn todo ->
+        %{
+          date:
+            String.split(Enum.at(todo, 0), "/")
+            |> (fn [yyyy, mm, dd] -> Date.from_iso8601!("#{yyyy}-#{mm}-#{dd}") end).(),
+          title: Enum.at(todo, 1)
+        }
+      end)
+
+    TodoListv2.new(todolists)
+  end
 end
