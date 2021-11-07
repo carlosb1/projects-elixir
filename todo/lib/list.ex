@@ -10,12 +10,12 @@ defmodule MultiDict do
   end
 end
 
-defmodule TodoList do
+defmodule Todo.List do
   defstruct auto_id: 1, entries: %{}
-  def new(), do: %TodoList{}
+  def new(), do: %Todo.List{}
 
   def new(entries \\ []) do
-    Enum.reduce(entries, %TodoList{}, fn entry, todo_list_acc ->
+    Enum.reduce(entries, %Todo.List{}, fn entry, todo_list_acc ->
       add_entry(todo_list_acc, entry)
     end)
 
@@ -27,7 +27,7 @@ defmodule TodoList do
     IO.inspect(label: entry)
     entry = Map.put(entry, :id, todo_list.auto_id)
     new_entries = Map.put(todo_list.entries, todo_list.auto_id, entry)
-    %TodoList{todo_list | entries: new_entries, auto_id: todo_list.auto_id + 1}
+    %Todo.List{todo_list | entries: new_entries, auto_id: todo_list.auto_id + 1}
   end
 
   def entries(todo_list, date) do
@@ -46,7 +46,7 @@ defmodule TodoList do
         new_entry = %{id: ^old_entry_id} = updater_fun.(old_entry)
         new_entry = updater_fun.(old_entry)
         new_entries = Map.put(todo_list.entries, new_entry.id, new_entry)
-        %TodoList{todo_list | entries: new_entries}
+        %Todo.List{todo_list | entries: new_entries}
     end
   end
 
@@ -55,7 +55,7 @@ defmodule TodoList do
   end
 end
 
-defmodule TodoList.CsvImporter do
+defmodule Todo.List.CsvImporter do
   @spec import(binary()) :: TodoList
   def import(name_file) do
     content = File.read!(name_file)
@@ -73,6 +73,6 @@ defmodule TodoList.CsvImporter do
         }
       end)
 
-    TodoList.new(todolists)
+    Todo.List.new(todolists)
   end
 end
