@@ -1,2 +1,4 @@
+.PHONY: test
 test:
-		mix test
+	mix compile
+	mix test
