@@ -48,6 +48,34 @@ defmodule Todo.Database do
   end
 end
 
+defmodule Todo.Database2 do
+  use GenServer
+
+  def start do
+    GenServer.start(__MODULE__, nil, name: __MODULE__)
+  end
+
+  def store(key, data) do
+    GenServer.cast(__MODULE__, {:store, key, data})
+  end
+
+  def get(key) do
+    GenServer.call(__MODULE__, {:get, key})
+  end
+
+  def init(_) do
+    {:ok, nil}
+  end
+
+  def handle_cast({:store, key, data}, state) do
+    {:noreply, state}
+  end
+
+  def handle_call({:get, key}, caller, state) do
+    {:noreply, state}
+  end
+end
+
 defmodule Todo.DatabaseWorker do
   use GenServer
 
