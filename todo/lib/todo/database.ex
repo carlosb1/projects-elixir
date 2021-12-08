@@ -63,8 +63,8 @@ defmodule Todo.DatabaseWorker do
     GenServer.call(__MODULE__, {:get, key})
   end
 
-  def init(_) do
-    File.mkdir_p!(@db_folder)
+  def init(db_folder) do
+    File.mkdir_p!(db_folder)
     {:ok, nil}
   end
 
