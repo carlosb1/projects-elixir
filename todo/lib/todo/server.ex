@@ -61,7 +61,7 @@ defmodule Todo.Server do
     {:noreply, {name, new_list}}
   end
 
-  def handle_call({:entries, date}, todo_list) do
-    {:reply, Todo.List.entries(todo_list, date), todo_list}
+  def handle_call({:entries, date}, _, {name, todo_list}) do
+    {:reply, Todo.List.entries(todo_list, date), {name, todo_list}}
   end
 end
