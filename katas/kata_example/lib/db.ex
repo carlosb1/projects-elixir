@@ -36,4 +36,9 @@ defmodule PersistenceMemory do
 
     %PersistenceMemory{data: data}
   end
+
+  @filepath "./resources/data.csv"
+  def default_file_path() do
+    @filepath
+  end
 end
