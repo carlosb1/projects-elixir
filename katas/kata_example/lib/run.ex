@@ -6,7 +6,7 @@ defmodule KataBirthday.Run do
     smtp = %EmailSender{}
     timer = DateTimer.default_supported_utc() |> DateTimer.new()
 
-    %KataBirthday{persistence: persistence, smtp: smtp, time: timer}
+    KataBirthday.new(persistence, smtp, timer)
     |> KataBirthday.birthdays()
     |> IO.inspect()
   end

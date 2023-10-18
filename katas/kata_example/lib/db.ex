@@ -2,7 +2,7 @@ defmodule PersistenceMemory do
   defstruct [:data]
   @type t :: %__MODULE__{}
 
-  @spec get_by_date(PersistenceMemory, Date) :: List
+  @spec get_by_date(atom | %{:data => any, optional(any) => any}, any) :: list
   def get_by_date(persistence, target_date) do
     persistence.data
     |> Enum.filter(fn value ->
@@ -14,24 +14,34 @@ defmodule PersistenceMemory do
   @spec to_date(String) :: Date
   defp to_date(str_date) do
     [yyyy, mm, dd] = String.split(str_date, "/")
-    {:ok, date} = Date.from_iso8601("#{yyyy}-#{mm}-#{dd}")
-    date
+    Date.from_iso8601("#{yyyy}-#{mm}-#{dd}")
   end
 
-  @spec new(String) :: PersistenceMemory
+  @spec new(
+          binary
+          | maybe_improper_list(
+              binary | maybe_improper_list(any, binary | []) | char,
+              binary | []
+            )
+        ) :: PersistenceMemory.t()
   def new(filepath) do
     data =
       File.read!(filepath)
       |> String.split("\n")
       |> Enum.reject(fn v -> v == "" end)
       |> Enum.drop(1)
-      |> Enum.map(fn line ->
+      |> Enum.reduce([], fn line, acc ->
         [surname, name, date, email] = String.split(line, ",")
         date = date |> String.trim_leading()
         name = name |> String.trim()
         surname = surname |> String.trim()
         email = email |> String.trim()
-        %{last_name: surname, name: name, date: to_date(date), email: email}
+
+        with {:ok, parsed_date} <- to_date(date) do
+          acc ++ [%{last_name: surname, name: name, date: parsed_date, email: email}]
+        else
+          _ -> acc
+        end
       end)
 
     %PersistenceMemory{data: data}

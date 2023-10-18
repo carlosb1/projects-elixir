@@ -2,6 +2,7 @@ import Swoosh.Email
 
 defmodule EmailSender do
   defstruct []
+  @type t :: %__MODULE__{}
 
   def send_template(user) do
     new()

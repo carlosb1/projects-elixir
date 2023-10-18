@@ -6,6 +6,14 @@ defmodule KataBirthday do
   @enforce_keys [:persistence, :smtp, :time]
   defstruct [:persistence, :smtp, :time]
 
+  @type t :: %__MODULE__{}
+
+  @spec new(PersistenceMemory.t(), EmailSender.t(), DateTimer.t()) :: KataBirthday.t()
+  def new(persistence, smtp, time) do
+    %KataBirthday{persistence: persistence, smtp: smtp, time: time}
+  end
+
+  @spec birthdays(KataBirthday.t()) :: %{birthday: Date.t(), email: <<_::152>>}
   @doc """
   Birthday function.
   """
